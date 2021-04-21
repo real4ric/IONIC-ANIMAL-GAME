@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { ToastController } from '@ionic/angular';
+
 
 @Component({
   selector: 'app-home',
@@ -73,26 +75,29 @@ export class HomePage {
     }
   ];
 
-  //stockagede l'animal choisi
+  //## 1 stockagede l'animal choisi 
   private chosenAnimal = null;
 
-  //stockage d'un objet audio HTML
+  ////## 2 stockage d'un objet audio HTML
+  private audio:HTMLAudioElement = null;  
 
-  private audio:HTMLAudioElement = null;
-
-  constructor() {}
+  constructor(private toastCtrl: ToastController) {}  //## 6 Ask for ToastController 
 
   public play(){
-    // Choisir un animal au hasard
+    //## 1 Choisir un animal au hasard  
     let isRandom = Math.floor(Math.random() * this.animalList.length);  //Math.floor to go for nearest full number and Math.random makes things random
+    
     this.chosenAnimal=this.animalList[isRandom];
 
-    // To eviter sound mixing, (arreter le son precedent)
+    // ## 3 To eviter sound mixing, (arreter le son precedent)
     if(this.audio && ! this.audio.ended){
       this.audio.pause();
     }
+
+    //## 7 Le message a afficher 
     
-    //Jouer un son
+    
+    //## 2 Jouer un son  
     //instanciation d'un objet audio avec le son que l'on veut jouer
     this.audio = new Audio('/assets' + this.chosenAnimal.file)
     //chargement du son
@@ -101,11 +106,39 @@ export class HomePage {
     this.audio.play();
   }
 
-  //Choix du joueur 
-  public guessAnimal(clickedAnimal){
-    console.log(clickedAnimal)
+  //## 4 Choix du joueur  
+  public async guessAnimal(clickedAnimal){
+
+    // ## 5 si aucun son n'a ete joue_ chosenAnimal est null  
+    if(this.chosenAnimal == null) {
+      return;
+    }
+    // dECLARE VARIABLES
+    let message;
+    let toastColor = 'danger';
+    
+    // ## 4 comparison des animaux  
+    //celui sur lequel le jouer a clique
+    //et celui dont on a joue le son
+    if(this.chosenAnimal.title == clickedAnimal.title) {
+      message = "Win!!!";
+      toastColor = 'primary'
+    } else {
+      message = "try again";
+    }
+
+    // ## 8 Affichage du message  (async-await)
+    const toast = await this.toastCtrl.create({
+      message: message,
+      duration: 1000,
+      position: 'top',
+      color: toastColor
+    });
+
+    toast.present();
+
+    
   }
 
-  
 
 }
