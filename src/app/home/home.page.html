@@ -9,8 +9,6 @@
 <ion-content [fullscreen]="true">
   <ion-list>
     
-    <ion-list-header>Touch An Animal <ion-icon name="volume-high"></ion-icon> </ion-list-header>
-    
     <ion-item *ngFor="let animal of animalList"> 
   
       <ion-label>{{animal.title}}         
@@ -27,10 +25,9 @@
 </ion-content>
 
 
-
 <ion-footer>
   <ion-toolbar class="ion-padding">
-    <ion-button expand="block" (click)="play()">JOUER</ion-button>
+    <ion-button expand="block" (click)="play()">JOUER  <ion-icon name="volume-high"></ion-icon></ion-button>
   </ion-toolbar>
 </ion-footer>
 

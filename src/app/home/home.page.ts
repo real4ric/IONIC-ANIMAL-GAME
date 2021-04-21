@@ -73,12 +73,30 @@ export class HomePage {
     }
   ];
 
+  //stockagede l'animal choisi
+  private chosenAnimal = null;
+
+  //stockage d'un objet audio HTML
+
+  private audio:HTMLAudioElement = null;
+
   constructor() {}
 
   public play(){
     // Choisir un animal au hasard
     let isRandom = Math.floor(Math.random() * this.animalList.length);  //Math.floor to go for nearest full number and Math.random makes things random
-    console.log(this.animalList[isRandom])
+    this.chosenAnimal=this.animalList[isRandom];
+    
+    //Jouer un son
+    //instanciation d'un objet audio avec le son que l'on veut jouer
+    this.audio = new Audio('/assets' + this.chosenAnimal.file)
+    //chargement du son
+    this.audio.load();
+    // lecture du son
+    this.audio.play();
+
   }
+
+  
 
 }
