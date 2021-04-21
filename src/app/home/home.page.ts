@@ -102,7 +102,8 @@ export class HomePage {
       this.audio.pause();
     }
 
-    //## 7 Le message a afficher 
+    //## 10 Lancement du chrono
+    this.startTimer(); 
 
 
     //## 2 Jouer un son  
@@ -152,10 +153,14 @@ export class HomePage {
   private resetGame(){
     this.chosenAnimal = null;
     this.audio = null;
+
+    this.secondLeft = 0; //## 10
+    clearInterval(this.timer)
   }
 
-  //10 
+  //10 Set Timer to show time left and a countdown reverse
   private startTimer(){
+    this.secondLeft = this.answerDelayInSecond;
     this.timer = setInterval(()=>{
       //Decremente le temps restants
       this.secondLeft--; 
