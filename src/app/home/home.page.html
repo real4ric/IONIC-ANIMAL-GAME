@@ -8,16 +8,29 @@
 
 <ion-content [fullscreen]="true">
   <ion-list>
-    <ion-list-header> Animal-Game</ion-list-header>
+    
+    <ion-list-header>Touch An Animal <ion-icon name="volume-high"></ion-icon> </ion-list-header>
+    
     <ion-item *ngFor="let animal of animalList"> 
-      
-      <ion-avatar slot="start">
-        <ion-img src="/assets/{{ animal.image}}" *ngIf="animal.image"></ion-img>
-      </ion-avatar>
-        
+  
       <ion-label>{{animal.title}}         
         <p>{{animal.desc}}</p>
         </ion-label>
+
+      <ion-avatar slot="start">
+        <ion-img src="/assets/{{ animal.image}}"></ion-img>
+      </ion-avatar>
+        
+      
     </ion-item> 
   </ion-list>
 </ion-content>
+
+
+
+<ion-footer>
+  <ion-toolbar class="ion-padding">
+    <ion-button expand="block" (click)="play()">JOUER</ion-button>
+  </ion-toolbar>
+</ion-footer>
+

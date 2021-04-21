@@ -75,4 +75,10 @@ export class HomePage {
 
   constructor() {}
 
+  public play(){
+    // Choisir un animal au hasard
+    let isRandom = Math.floor(Math.random() * this.animalList.length);  //Math.floor to go for nearest full number and Math.random makes things random
+    console.log(this.animalList[isRandom])
+  }
+
 }
