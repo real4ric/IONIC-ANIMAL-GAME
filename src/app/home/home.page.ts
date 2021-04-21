@@ -76,27 +76,35 @@ export class HomePage {
   ];
 
   //## 1 stockagede l'animal choisi 
-  private chosenAnimal = null;
+  public chosenAnimal = null;
+
+  //10 Time maximum to reset
+  private answerDelayInSecond = 30;
+  //10 Time left to reset
+  public secondLeft = null;
+
+  //10 le chrono pour le reponse
+  private timer = null;
 
   ////## 2 stockage d'un objet audio HTML
-  private audio:HTMLAudioElement = null;  
+  private audio: HTMLAudioElement = null;
 
-  constructor(private toastCtrl: ToastController) {}  //## 6 Ask for ToastController 
+  constructor(private toastCtrl: ToastController) { }  //## 4 Ask for ToastController 
 
-  public play(){
+  public play() {
     //## 1 Choisir un animal au hasard  
     let isRandom = Math.floor(Math.random() * this.animalList.length);  //Math.floor to go for nearest full number and Math.random makes things random
-    
-    this.chosenAnimal=this.animalList[isRandom];
+
+    this.chosenAnimal = this.animalList[isRandom];
 
     // ## 3 To eviter sound mixing, (arreter le son precedent)
-    if(this.audio && ! this.audio.ended){
+    if (this.audio && !this.audio.ended) {
       this.audio.pause();
     }
 
     //## 7 Le message a afficher 
-    
-    
+
+
     //## 2 Jouer un son  
     //instanciation d'un objet audio avec le son que l'on veut jouer
     this.audio = new Audio('/assets' + this.chosenAnimal.file)
@@ -107,22 +115,24 @@ export class HomePage {
   }
 
   //## 4 Choix du joueur  
-  public async guessAnimal(clickedAnimal){
+  public async guessAnimal(clickedAnimal) {
 
     // ## 5 si aucun son n'a ete joue_ chosenAnimal est null  
-    if(this.chosenAnimal == null) {
+    if (this.chosenAnimal == null) {
       return;
     }
     // dECLARE VARIABLES
     let message;
-    let toastColor = 'danger';
+    let toastColor = 'danger'; //## 8
     
+
     // ## 4 comparison des animaux  
     //celui sur lequel le jouer a clique
     //et celui dont on a joue le son
-    if(this.chosenAnimal.title == clickedAnimal.title) {
+    if (this.chosenAnimal.title == clickedAnimal.title) {
       message = "Win!!!";
-      toastColor = 'primary'
+      toastColor = 'secondary';
+      this.resetGame(); //## 9
     } else {
       message = "try again";
     }
@@ -132,12 +142,30 @@ export class HomePage {
       message: message,
       duration: 1000,
       position: 'top',
-      color: toastColor
+      color: toastColor  //## 8
     });
 
     toast.present();
+  }
 
-    
+ //## 9 Reset game if win
+  private resetGame(){
+    this.chosenAnimal = null;
+    this.audio = null;
+  }
+
+  //10 
+  private startTimer(){
+    this.timer = setInterval(()=>{
+      //Decremente le temps restants
+      this.secondLeft--; 
+      //s'il ne reste plus de temps, on remet le jeu a zero
+      if (this.secondLeft == 0) {
+        this.resetGame();
+        //annulation du chrono
+        clearInterval(this.timer);
+      }
+    },1000)
   }
 
 

@@ -27,7 +27,7 @@
 
 <ion-footer>
   <ion-toolbar class="ion-padding">
-    <ion-button expand="block" (click)="play()">JOUER  <ion-icon name="volume-high"></ion-icon></ion-button>
+    <ion-button expand="block" (click)="play()" [disabled] = "chosenAnimal != null" [color] = "chosenAnimal ? 'danger' : 'primary'">JOUER</ion-button>
   </ion-toolbar>
 </ion-footer>
 
