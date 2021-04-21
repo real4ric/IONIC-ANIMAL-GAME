@@ -86,6 +86,11 @@ export class HomePage {
     // Choisir un animal au hasard
     let isRandom = Math.floor(Math.random() * this.animalList.length);  //Math.floor to go for nearest full number and Math.random makes things random
     this.chosenAnimal=this.animalList[isRandom];
+
+    // To eviter sound mixing, (arreter le son precedent)
+    if(this.audio && ! this.audio.ended){
+      this.audio.pause();
+    }
     
     //Jouer un son
     //instanciation d'un objet audio avec le son que l'on veut jouer
@@ -94,7 +99,11 @@ export class HomePage {
     this.audio.load();
     // lecture du son
     this.audio.play();
+  }
 
+  //Choix du joueur 
+  public guessAnimal(clickedAnimal){
+    console.log(clickedAnimal)
   }
 
   
