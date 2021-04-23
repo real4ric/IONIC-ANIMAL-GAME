@@ -74,73 +74,74 @@ export class HomePage {
   ];
 
   
-  public chosenAnimal = null;                        //## 1 stockagede l'animal choisi
-  private answerDelayInSecond = 30;                  //10 Time maximum to reset
-  public secondLeft = null;                          //10 Time left to reset
-  private timer = null;                               //10 le chrono pour le reponse
-  private audio: HTMLAudioElement = null;             //## 2 stockage d'un objet audio HTML
-  public tries = 0;                                   //# 11 Nombre de coups
+  public chosenAnimal = null;                                                         //## 1 stockagede l'animal choisi
+  private answerDelayInSecond = 30;                                                   //10 Time maximum to reset
+  public secondLeft = null;                                                           //10 Time left to reset
+  private timer = null;                                                               //10 le chrono pour le reponse
+  private audio: HTMLAudioElement = null;                                             //## 2 stockage d'un objet audio HTML
+  public tries = 0;                                                                   //# 11 Nombre de coups
   private maxTries = 3;
-  constructor(private toastCtrl: ToastController) {}                      //## 4 Ask for ToastController
   
-  public play() {                                                         //## 1 Choisir un animal au hasard   
-    let isRandom = Math.floor(Math.random() * this.animalList.length);      //Math.floor to go for nearest full number and Math.random makes things random
+  constructor(private toastCtrl: ToastController) {}                                  //## 4 Ask for ToastController
+  
+  public play() {                                                                     //## 1 Choisir un animal au hasard   
+    let isRandom = Math.floor(Math.random() * this.animalList.length);                //Math.floor to go for nearest full number and Math.random makes things random
     this.chosenAnimal = this.animalList[isRandom];
 
-     if (this.audio && !this.audio.ended) {                                  // ## 3 To eviter sound mixing, (arreter le son precedent)
+     if (this.audio && !this.audio.ended) {                                           // ## 3 To eviter sound mixing, (arreter le son precedent)
       this.audio.pause();
     }
-    this.startTimer();                                                //## 10 Lancement du chrono
-    this.audio = new Audio('/assets' + this.chosenAnimal.file);         //## 2 Jouer un son //instanciation d'un objet audio avec le son que l'on veut jouer
-    this.audio.load();                                                //chargement du son
-    this.audio.play();                                                  // lecture du son
+    this.startTimer();                                                               //## 10 Lancement du chrono
+    this.audio = new Audio('/assets' + this.chosenAnimal.file);                      //## 2 Jouer un son //instanciation d'un objet audio avec le son que l'on veut jouer
+    this.audio.load();                                                               //chargement du son
+    this.audio.play();                                                              // lecture du son
   }
 
   
-  public async guessAnimal(clickedAnimal) {                         //## 4 Choix du joueur
-    if (this.chosenAnimal == null) {                                 // ## 5 si aucun son n'a ete joue_ chosenAnimal est null
+  public async guessAnimal(clickedAnimal) {                                           //## 4 Choix du joueur
+    if (this.chosenAnimal == null) {                                                   // ## 5 si aucun son n'a ete joue_ chosenAnimal est null
       return;
     }
     this.tries++;
-    let message;                                // dECLARE VARIABLES
-    let toastColor = 'danger';                  //## 8
+    let message;                                                                    // dECLARE VARIABLES
+    let toastColor = 'danger';                                                      //## 8
 
-    if(this.tries > this.maxTries) {             //## 12 max tries
+    if(this.tries > this.maxTries) {                                               //## 12 max tries
       message = "Vous avez depasse le nombre de coups autorise";
       toastColor = "warning";
       this.resetGame();
     }
-    else if (this.chosenAnimal.title == clickedAnimal.title) {          // ## 4 comparison des animaux //celui sur lequel le jouer a clique //et celui dont on a joue le son
-      message = 'gagne en ' + this.tries + ' coups';                  //win
+    else if (this.chosenAnimal.title == clickedAnimal.title) {                    // ## 4 comparison des animaux //celui sur lequel le jouer a clique //et celui dont on a joue le son
+      message = 'gagne en ' + this.tries + ' coups';                              //win
       toastColor = 'primary';
-      this.resetGame();                                                 //## 9
+      this.resetGame();                                                          //## 9
     } else {
       message = 'try again';
     }
-    const toast = await this.toastCtrl.create({                         // ## 8 Affichage du message  (async-await)
+    const toast = await this.toastCtrl.create({                                   // ## 8 Affichage du message  (async-await)
       message: message,
       duration: 1000,
       position: 'top',
-      color: toastColor,                                                  //## 8
+      color: toastColor,                                                         //## 8
     });
 
     toast.present();
   }
-  
-  private resetGame() {                                 //## 9 Reset game if win
+
+  private resetGame() {                                                        //## 9 Reset game if win
     this.chosenAnimal = null;
     this.audio = null;
     this.tries = 0;
-    this.secondLeft = 0;                                //## 10
+    this.secondLeft = 0;                                                       //## 10
     clearInterval(this.timer);
   } 
-    private startTimer() {                                  //10 Set Timer to show time left and a countdown reverse
+    private startTimer() {                                                    //10 Set Timer to show time left and a countdown reverse
     this.secondLeft = this.answerDelayInSecond;
     this.timer = setInterval(() => { 
-      this.secondLeft--;                                  //Decremente le temps restants
-      if (this.secondLeft == 0) {                           //s'il ne reste plus de temps, on remet le jeu a zero 
+      this.secondLeft--;                                                      //Decremente le temps restants
+      if (this.secondLeft == 0) {                                             //s'il ne reste plus de temps, on remet le jeu a zero 
         this.resetGame();
-        clearInterval(this.timer);                            //annulation du chrono
+        clearInterval(this.timer);                                           //annulation du chrono
       }
     }, 1000);
   }
