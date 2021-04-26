@@ -1,5 +1,7 @@
 {
   "name": "animal-game",
-  "integrations": {},
+  "integrations": {
+    "capacitor": {}
+  },
   "type": "angular"
 }
